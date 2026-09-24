@@ -149,6 +149,7 @@ section{padding:90px 0 0}
 .case:nth-child(even) .case-no{right:auto;left:26px}
 
 .shot{position:relative}
+.shot,.info{min-width:0}
 .browser{border-radius:16px;overflow:hidden;background:#061215;border:1px solid var(--line2);box-shadow:0 30px 60px -20px rgba(0,0,0,.9)}
 .browser .bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 14px;background:#0b1d22;border-bottom:1px solid var(--line)}
 .browser .bar i{width:10px;height:10px;border-radius:50%;background:#1f4a52}
@@ -237,11 +238,13 @@ section{padding:90px 0 0}
 .v-a{font:700 13px Manrope;color:var(--teal);text-decoration:none;border:1px solid var(--line2);border-radius:10px;padding:9px 14px}
 .v-x{width:40px;height:40px;border-radius:10px;border:1px solid var(--line2);background:none;color:var(--ink);font-size:20px;cursor:pointer}
 .v-x:hover,.v-a:hover{border-color:var(--teal)}
-.v-stage{flex:1;display:flex;justify-content:center;align-items:stretch;padding:18px;overflow:auto}
-.v-frame{width:100%;max-width:100%;border-radius:14px;overflow:hidden;border:1px solid var(--line2);background:#fff;transition:width .45s cubic-bezier(.2,.7,.2,1);box-shadow:0 0 60px rgba(25,240,212,.15)}
+.v-stage{flex:1;position:relative;overflow:hidden}
+.v-frame{position:absolute;top:18px;left:0;transform-origin:0 0;border-radius:14px;overflow:hidden;border:1px solid var(--line2);background:#fff;box-shadow:0 0 60px rgba(25,240,212,.15)}
 .v-frame iframe{width:100%;height:100%;border:0;display:block}
-.v-frame.tab{width:820px}
-.v-frame.mob{width:390px;border-radius:28px;border:3px solid var(--teal)}
+.v-frame.mob{border-radius:28px;border:3px solid var(--teal)}
+.v-frame.tab{border-radius:20px;border:3px solid var(--line2)}
+.v-scale{position:fixed;left:50%;bottom:18px;translate:-50% 0;z-index:3;font:700 12px Manrope;color:var(--teal);white-space:nowrap;background:rgba(3,8,10,.85);border:1px solid var(--line2);border-radius:20px;padding:6px 12px;pointer-events:none}
+.v-scale:empty{display:none}
 
 .toast{position:fixed;left:50%;bottom:26px;translate:-50% 30px;opacity:0;background:var(--grad);color:#021214;font-weight:800;padding:12px 20px;border-radius:12px;z-index:200;transition:all .35s;pointer-events:none}
 .toast.show{translate:-50% 0;opacity:1}
@@ -280,9 +283,10 @@ section{padding:90px 0 0}
   .foot-row .btn{width:auto;flex:1}
   .final{padding:40px 18px;border-radius:24px}
   .v-top{padding:10px 12px;gap:8px}
-  .v-title{width:100%;order:-1}
-  .v-dev{flex:1}.v-dev button{flex:1;padding:8px 6px}
-  .v-stage{padding:10px}
+  .v-title{flex:1;width:auto}
+  .v-dev{order:5;width:100%}.v-dev button{flex:1;padding:8px 6px}
+  .v-a-t{display:none}
+  .v-a{padding:9px 13px}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
@@ -420,7 +424,8 @@ section{padding:90px 0 0}
     <div class="v-dev" id="vDev">
       <button data-d="" class="on">🖥 ПК</button><button data-d="tab">▭ Планшет</button><button data-d="mob">📱 Телефон</button>
     </div>
-    <a class="v-a" id="vOpen" href="#" target="_blank" rel="noopener">Нова вкладка ↗</a>
+    <span class="v-scale" id="vScale"></span>
+    <a class="v-a" id="vOpen" href="#" target="_blank" rel="noopener"><span class="v-a-t">Нова вкладка </span>↗</a>
     <button class="v-x" id="vClose" aria-label="Закрити">✕</button>
   </div>
   <div class="v-stage"><div class="v-frame" id="vFrame"><iframe id="vIframe" title="Перегляд шаблону" src="about:blank"></iframe></div></div>
@@ -601,11 +606,22 @@ function openCase(id){
   const c=byId[id], url=c.cur||c.url;
   $("#vTitle").textContent=`0${c.n} · ${c.title}`;
   $("#vOpen").href=url; vIframe.src=url;
-  setDev(innerWidth<720?"mob":"");
   viewer.classList.add('open'); document.body.style.overflow='hidden';
+  setDev(innerWidth<720?"mob":"");
 }
 function closeViewer(){ viewer.classList.remove('open'); vIframe.src="about:blank"; document.body.style.overflow=''; }
-function setDev(d){ vFrame.className="v-frame "+d; document.querySelectorAll('#vDev button').forEach(b=>b.classList.toggle('on',b.dataset.d===d)); }
+/* кожен режим показує справжню ширину пристрою (ПК 1440, планшет 820, телефон 390) і масштабує її під екран */
+let curDev="";
+function layoutViewer(){
+  const st=vFrame.parentElement, pad=innerWidth<720?10:18, W=st.clientWidth-pad*2, H=st.clientHeight-pad*2;
+  const base=curDev==="mob"?390:curDev==="tab"?820:Math.max(1440,W);
+  const k=Math.min(1,W/base);
+  vFrame.style.width=base+"px"; vFrame.style.height=(H/k)+"px"; vFrame.style.top=pad+"px";
+  vFrame.style.left=((st.clientWidth-base*k)/2)+"px"; vFrame.style.transform=`scale(${k})`;
+  $("#vScale").textContent=k<1?`масштаб ${Math.round(k*100)}%`:"";
+}
+function setDev(d){ curDev=d; vFrame.className="v-frame "+d; document.querySelectorAll('#vDev button').forEach(b=>b.classList.toggle('on',b.dataset.d===d)); layoutViewer(); }
+addEventListener('resize',()=>{ if(viewer.classList.contains('open')) layoutViewer(); });
 $("#vDev").addEventListener('click',e=>{ const b=e.target.closest('button'); if(b) setDev(b.dataset.d); });
 $("#vClose").addEventListener('click',closeViewer);
 addEventListener('keydown',e=>{ if(e.key==="Escape"&&viewer.classList.contains('open')) closeViewer(); });
