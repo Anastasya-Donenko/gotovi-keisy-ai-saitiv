@@ -106,10 +106,10 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
   font-size:13px;padding:10px 16px;border-radius:12px;transform:rotate(6deg);box-shadow:var(--glow)}
 
 /* ---------- marquee ---------- */
-.marq{margin:30px 0 0;border-block:1px solid var(--line);background:rgba(10,23,27,.7);overflow:hidden;padding:16px 0;contain:paint;width:100%}
-.marq-t{display:flex;flex-wrap:nowrap;width:max-content;animation:marq 38s linear infinite;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+.marq{margin:30px 0 0;border-block:1px solid var(--line);background:#081417;overflow:hidden;padding:16px 0;contain:paint;width:100%;position:relative;z-index:1;isolation:isolate;-webkit-transform:translateZ(0);transform:translateZ(0)}
+.marq-t{display:flex;flex-wrap:nowrap;width:max-content;animation:marq 38s linear infinite;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .marq-t span{flex:none;font-weight:700;color:#bfeff3;white-space:nowrap;font-size:15px;line-height:1.3;padding-right:44px}
-.marq-t span::before{content:"◆";color:var(--teal);margin-right:14px;text-shadow:var(--glow)}
+.marq-t span::before{content:"◆";color:var(--teal);margin-right:14px}
 @keyframes marq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 
 /* ---------- секції ---------- */
@@ -289,6 +289,10 @@ section{padding:90px 0 0}
   .v-dev{order:5;width:100%}.v-dev button{flex:1;padding:8px 6px}
   .v-a-t{display:none}
   .v-a{padding:9px 13px}
+}
+@media (max-width:720px){
+  .bg-fx .grid,.orb,.ring{animation:none}
+  .orb{filter:blur(70px)}
 }
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
 </style>
