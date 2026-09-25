@@ -14,6 +14,9 @@
   --ink:#eafcff; --muted:#86a6ac; --teal:#19f0d4; --cyan:#22d3ee; --teal-d:#0fb7a2;
   --glow:0 0 24px rgba(25,240,212,.45); --r:22px;
   --grad:linear-gradient(100deg,#19f0d4 0%,#2ee6c8 60%,#5eead4 100%);
+  /* золото з шаблонів «Мульти-лінк» і «Відгуки» */
+  --gold:#d9b673; --gold2:#f3dca6; --gold3:#a8823f;
+  --grad-gold:linear-gradient(100deg,#a8823f 0%,#d9b673 45%,#f3dca6 100%);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -59,6 +62,9 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 .chip{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.16em;
   text-transform:uppercase;color:var(--teal);padding:8px 16px;border:1px solid var(--line2);border-radius:40px;
   background:rgba(25,240,212,.05)}
+.chip.gold{color:var(--gold);border-color:rgba(217,182,115,.35);background:rgba(217,182,115,.07)}
+.chip.gold i{background:var(--gold);box-shadow:0 0 18px rgba(217,182,115,.6)}
+.gold-t{background:var(--grad-gold);-webkit-background-clip:text;background-clip:text;color:transparent}
 .chip i{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:var(--glow);animation:pulse 1.8s infinite}
 @keyframes pulse{50%{opacity:.3}}
 
@@ -73,6 +79,8 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:54px}
 .stat{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;
   padding:20px 18px;text-align:center;position:relative;overflow:hidden}
+.stat.money b{color:var(--gold)}
+.stat.money::after{background:var(--grad-gold);box-shadow:0 0 18px rgba(217,182,115,.5)}
 .stat::after{content:"";position:absolute;left:20%;right:20%;bottom:0;height:2px;background:var(--grad);box-shadow:var(--glow)}
 .stat b{display:block;font-family:Unbounded;font-size:clamp(24px,3vw,34px);font-weight:800;color:var(--ink);white-space:nowrap}
 .stat span{font-size:13px;color:var(--muted);font-weight:600}
@@ -102,7 +110,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 .phone::before{content:"";position:absolute;top:8px;left:50%;width:40px;height:5px;border-radius:5px;background:#1f4a52;transform:translateX(-50%)}
 .ring{position:absolute;inset:8% 6%;border:1px dashed rgba(25,240,212,.18);border-radius:50%;animation:spin 40s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.bonus-tag{position:absolute;top:-6px;right:0;z-index:5;background:var(--grad);color:#021214;font-weight:900;font-family:Unbounded;
+.bonus-tag{position:absolute;top:-6px;right:0;z-index:5;background:var(--grad-gold);color:#021214;font-weight:900;font-family:Unbounded;
   font-size:13px;padding:10px 16px;border-radius:12px;transform:rotate(6deg);box-shadow:var(--glow)}
 
 /* ---------- marquee ---------- */
@@ -110,6 +118,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:clip}
 .marq-t{display:flex;flex-wrap:nowrap;width:max-content;animation:marq 38s linear infinite;-webkit-backface-visibility:hidden;backface-visibility:hidden}
 .marq-t span{flex:none;font-weight:700;color:#bfeff3;white-space:nowrap;font-size:15px;line-height:1.3;padding-right:44px}
 .marq-t span::before{content:"◆";color:var(--teal);margin-right:14px}
+.marq-t span:nth-child(even)::before{color:var(--gold)}
 @keyframes marq{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
 
 /* ---------- секції ---------- */
@@ -188,7 +197,7 @@ section{padding:90px 0 0}
 .foot-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 .price{font-family:Unbounded;font-weight:800;font-size:20px;color:var(--ink);margin-right:auto;white-space:nowrap}
 .price small{display:block;font-family:Manrope;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-.price b{color:var(--teal);text-shadow:0 0 18px rgba(25,240,212,.5)}
+.price b{color:var(--gold);text-shadow:0 0 18px rgba(217,182,115,.35)}
 .btn.sm{padding:13px 18px;font-size:13px;border-radius:12px}
 .styles{display:flex;flex-wrap:wrap;gap:6px;margin:-4px 0 18px;align-items:center}
 .styles em{font-style:normal;font-size:12.5px;color:var(--muted);font-weight:700;margin-right:4px}
@@ -204,11 +213,11 @@ section{padding:90px 0 0}
 .prow .i{font-family:Unbounded;font-weight:800;color:var(--teal)}
 .prow .nm{font-weight:700}
 .prow .nm small{display:block;color:var(--muted);font-weight:500;font-size:13px}
-.prow .p{font-family:Unbounded;font-weight:800;color:var(--teal)}
+.prow .p{font-family:Unbounded;font-weight:800;color:var(--gold)}
 .prow .t{color:#cdf7fa;font-weight:600;font-size:14px}
 .upsell{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:18px}
-.up{background:var(--panel);border:1px dashed var(--line2);border-radius:18px;padding:18px;text-align:center}
-.up b{display:block;white-space:nowrap;font-family:Unbounded;color:var(--teal);font-size:18px}
+.up{background:var(--panel);border:1px dashed rgba(217,182,115,.3);border-radius:18px;padding:18px;text-align:center}
+.up b{display:block;white-space:nowrap;font-family:Unbounded;color:var(--gold);font-size:18px}
 .up span{font-size:13.5px;color:var(--muted);font-weight:600}
 
 /* ---------- скрипт ---------- */
@@ -219,10 +228,10 @@ section{padding:90px 0 0}
 .copy{position:absolute;top:18px;right:18px;font:700 12px Manrope;color:var(--teal);background:#061215;border:1px solid var(--line2);border-radius:8px;padding:6px 11px;cursor:pointer;transition:all .2s}
 .copy:hover{border-color:var(--teal);box-shadow:var(--glow)}
 .tip{margin-top:18px;background:rgba(25,240,212,.06);border:1px solid var(--line2);border-radius:18px;padding:18px 22px;color:#d8f4f6;font-size:15px}
-.tip b{color:var(--teal)}
+.tip b{color:var(--gold)}
 
 /* ---------- фінал ---------- */
-.final{margin:90px 0 60px;border-radius:32px;padding:56px 30px;text-align:center;position:relative;overflow:hidden;
+.final{margin:90px 0 60px;border-radius:32px;padding:56px 30px;text-align:center;position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(217,182,115,.35);
   background:radial-gradient(600px 260px at 50% 0%,rgba(25,240,212,.22),transparent 70%),linear-gradient(180deg,#0b1d22,#061215);border:1px solid var(--line2)}
 .final h2{font-size:clamp(24px,3.6vw,42px);text-transform:uppercase;font-weight:900;line-height:1.1}
 .final p{color:var(--muted);font-size:17px;max-width:58ch;margin:18px auto 28px}
@@ -305,7 +314,7 @@ section{padding:90px 0 0}
 <header class="hero">
   <div class="wrap hero-in">
     <div>
-      <span class="chip rv"><i></i>Бонус AI-MONEY CLUB</span>
+      <span class="chip gold rv"><i></i>Бонус AI-MONEY CLUB</span>
       <h1 class="rv d1">Готові кейси для продажу <span class="grad line">AI-сайтів</span></h1>
       <p class="sub rv d2">Набір: <b>8 шаблонів продаючих сайтів</b>, які можна показати клієнту вже сьогодні</p>
       <p class="lead rv d3">Клієнти купують те, що бачать. Замість «я вмію робити сайти» ви відкриваєте живий приклад з його ніші — і розмова одразу переходить до ціни та термінів.</p>
@@ -334,7 +343,7 @@ section{padding:90px 0 0}
     <div class="stats">
       <div class="stat rv"><b data-count="8">0</b><span>готових шаблонів</span></div>
       <div class="stat rv d1"><b data-count="30" data-suf="+">0</b><span>ніш для продажу</span></div>
-      <div class="stat rv d2"><b data-count="300" data-pre="до&nbsp;" data-suf="&nbsp;$">0</b><span>чек за один сайт</span></div>
+      <div class="stat money rv d2"><b data-count="300" data-pre="до&nbsp;" data-suf="&nbsp;$">0</b><span>чек за один сайт</span></div>
       <div class="stat rv d3"><b data-count="100" data-suf="%">0</b><span>адаптив під телефон</span></div>
     </div>
   </div>
@@ -382,8 +391,8 @@ section{padding:90px 0 0}
 <!-- ================= ПРАЙС ================= -->
 <section id="price">
   <div class="sec-h rv">
-    <span class="chip"><i></i>Шпаргалка по цінах</span>
-    <h2><span class="nw">Скільки <span class="grad">брати</span></span><br><span class="nw">за кожен сайт</span></h2>
+    <span class="chip gold"><i></i>Шпаргалка по цінах</span>
+    <h2><span class="nw">Скільки <span class="gold-t">брати</span></span><br><span class="nw">за кожен сайт</span></h2>
     <p>Стартові ціни для ринку України. Коли назбираються перші відгуки, сміливо піднімайте ціну.</p>
   </div>
   <div class="ptable rv" id="ptable"></div>
@@ -415,7 +424,7 @@ section{padding:90px 0 0}
 
 <!-- ================= ФІНАЛ ================= -->
 <div class="final rv">
-  <span class="chip"><i></i>AI-MONEY CLUB</span>
+  <span class="chip gold"><i></i>AI-MONEY CLUB</span>
   <h2 style="margin-top:18px">Шаблони у вас є.<br><span class="grad">Далі — перший клієнт</span></h2>
   <p>Оберіть один кейс, знайдіть 10 бізнесів з цієї ніші й надішліть їм посилання з першим повідомленням зі скрипту вище. Щоб отримати першу оплату, цього вже достатньо.</p>
   <a href="#cases" class="btn btn-main">Повернутися до кейсів ↑</a>
